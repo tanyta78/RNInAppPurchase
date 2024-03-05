@@ -1,6 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Platform } from 'react-native';
+import {
+  endConnection,
+  flushFailedPurchasesCachedAsPendingAndroid,
+  initConnection,
+} from 'react-native-iap';
 import Home from './src/screens/home';
 import Paywall from './src/screens/paywall';
 import RecipeDetail from './src/screens/recipeDetail';
@@ -8,6 +14,23 @@ import RecipeDetail from './src/screens/recipeDetail';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  useEffect(() => {
+    const init = async () => {
+      try {
+        await initConnection();
+        if (Platform.OS === 'android') {
+          flushFailedPurchasesCachedAsPendingAndroid();
+        }
+      } catch (error) {
+        console.error('Error occurred during initilization', error.message);
+      }
+    };
+    init();
+    return () => {
+      endConnection();
+    };
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
