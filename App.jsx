@@ -22,7 +22,7 @@ const App = () => {
           flushFailedPurchasesCachedAsPendingAndroid();
         }
       } catch (error) {
-        console.error('Error occurred during initilization', error.message);
+        console.error('Error occurred during initialization', error.message);
       }
     };
     init();

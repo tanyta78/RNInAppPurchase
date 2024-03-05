@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -57,16 +57,16 @@ const Paywall = ({ navigation }) => {
       purchaseUpdateSubscription.remove();
       purchaseErrorSubscription.remove();
     };
-  }, []);
+  }, [notifySuccessfulPurchase]);
 
-  const notifySuccessfulPurchase = () => {
+  const notifySuccessfulPurchase = useCallback(() => {
     Alert.alert('Success', 'Purchase successful', [
       {
         text: 'Home',
         onPress: () => navigation.navigate('Home'),
       },
     ]);
-  };
+  }, [navigation]);
 
   const handlePurchase = async productId => {
     setLoading(true);
